@@ -9,8 +9,14 @@
             </v-toolbar>
             <v-card-text>
               <v-form>
-                <v-text-field label="Username" type="text" v-model="username"></v-text-field>
                 <v-text-field
+                  prepend-icon="account_box"
+                  label="Username"
+                  type="text"
+                  v-model="username"
+                ></v-text-field>
+                <v-text-field
+                  prepend-icon="lock"
                   id="password"
                   name="password"
                   label="Password"
@@ -20,6 +26,7 @@
               </v-form>
             </v-card-text>
             <v-card-actions>
+              <p class="red--text" v-if="error">{{error}}</p>
               <v-spacer></v-spacer>
 
               <v-btn color="blue lighten-3" @click="signUp">Sign up</v-btn>
@@ -37,14 +44,24 @@ export default {
   data() {
     return {
       username: null,
-      password: null
+      password: null,
+      error: null
     };
   },
   methods: {
     signUp() {
-      axios.post('http://localhost:5000/register', {
-        username: this.username
-      });
+      this.error = null;
+      axios
+        .post('http://localhost:5000/register', {
+          username: this.username,
+          password: this.password
+        })
+        .then(() => {
+          (this.username = ''), (this.password = '');
+        })
+        .catch(error => {
+          this.error = error.response.data.error;
+        });
     }
   }
 };
