@@ -59,11 +59,17 @@ export default {
           this.$store.dispatch('setUser', res.data.user);
           this.$store.dispatch('setToken', res.data.token);
           window.localStorage.setItem('token', res.data.token);
+          this.$router.push({ name: 'index' });
         })
         .catch(err => {
           this.error = err.response.data.error;
         });
     }
+  },
+  mounted() {
+    console.log(this.$store.state.token);
+    console.log(this.$store.state.user);
+    console.log(this.$store.state.isLoggedIn);
   }
 };
 </script>

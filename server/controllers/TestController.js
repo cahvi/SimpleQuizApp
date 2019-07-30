@@ -1,19 +1,36 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
-const config = require('../config/config');
+const Test = require('../models/Test');
 
 module.exports = {
   index(req, res) {
-    const user = req.user;
+    Test.find()
+      .then(test => {
+        res.status(200).send(test);
+      })
+      .catch(err => {
+        res.status(500).send(err);
+      });
+  },
+  post(req, res) {
+    const test = new Test(req.body);
 
-    User.findOne({ _id: user._id })
-      .exec()
-      .then(user => {
-        if (user) {
-          console.log('löytyi');
-        } else {
-          console.log('ei löytynyt');
-        }
+    test
+      .save()
+      .then(test => {
+        res.status(200).send(test);
+
+        console.log(`${test} created!`);
+      })
+      .catch(err => {
+        res.status(500).send(err);
+      });
+  },
+  show(req, res) {
+    Test.findById(req.params.testId)
+      .then(test => {
+        res.status(200).send(test);
+      })
+      .catch(err => {
+        res.status(500).send(err);
       });
   }
 };

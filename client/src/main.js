@@ -14,4 +14,8 @@ new Vue({
 }).$mount('#app');
 
 console.log('refreshed');
-store.dispatch('getUser');
+
+const token = window.localStorage.getItem('token');
+if (token) {
+  store.dispatch('getUser');
+}

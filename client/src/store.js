@@ -36,7 +36,8 @@ export default new Vuex.Store({
         .get('getuser')
         .then(res => {
           commit('setUser', res.data);
-        });
+        })
+        .catch(err => console.log(err));
     }
   }
 });
