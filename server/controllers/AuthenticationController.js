@@ -1,13 +1,11 @@
 const User = require('../models/User');
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
-const bcrypt = require('bcryptjs');
 
 function jwtSignUser(user) {
-  const ONE_WEEK = 60 * 60 * 24 * 7;
+  const EIGHT_HOURS = 60 * 60 * 8;
   return jwt.sign(user, config.authentication.jwtSecret, {
-    expiresIn: ONE_WEEK
+    expiresIn: EIGHT_HOURS
   });
 }
 
@@ -38,7 +36,7 @@ module.exports = {
       .then(user => {
         if (!user) {
           return res.status(403).send({
-            message: 'The username does not exist'
+            error: 'The username does not exist'
           });
         }
 
@@ -46,7 +44,7 @@ module.exports = {
           const isPasswordValid = user.comparePassword(password);
           if (!isPasswordValid) {
             return res.status(403).send({
-              message: 'Invalid password'
+              error: 'Invalid password'
             });
           }
         }
@@ -59,9 +57,12 @@ module.exports = {
       .catch(err => {
         if (err) {
           return res.status(500).send({
-            message: 'An error has occured'
+            error: 'An error has occured'
           });
         }
       });
+  },
+  getuser(req, res) {
+    res.send(req.user);
   }
 };

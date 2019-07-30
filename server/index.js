@@ -19,6 +19,7 @@ db.once('open', () => {
   console.log('connected to mongodb');
 });
 
+//require('./passport');
 require('./routes')(app);
 
 const port = config.port;

@@ -5,7 +5,7 @@
         <div class="signup-form">
           <v-card class="grey lighten-4">
             <v-toolbar color="black lighten-5">
-              <v-toolbar-title class="white--text">Sign up</v-toolbar-title>
+              <v-toolbar-title class="white--text">Login</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
               <v-form>
@@ -29,7 +29,7 @@
               <p class="red--text" v-if="error">{{error}}</p>
               <v-spacer></v-spacer>
 
-              <v-btn color="black" dark @click="signUp">Sign up</v-btn>
+              <v-btn color="black" dark @click="login">Login</v-btn>
             </v-card-actions>
           </v-card>
         </div>
@@ -49,14 +49,16 @@ export default {
     };
   },
   methods: {
-    signUp() {
+    login() {
       this.error = null;
-      AuthenticationService.register({
+      AuthenticationService.login({
         username: this.username,
         password: this.password
       })
-        .then(() => {
-          this.$router.push({ name: 'login' });
+        .then(res => {
+          this.$store.dispatch('setUser', res.data.user);
+          this.$store.dispatch('setToken', res.data.token);
+          window.localStorage.setItem('token', res.data.token);
         })
         .catch(err => {
           this.error = err.response.data.error;
@@ -67,4 +69,7 @@ export default {
 </script>
 
 <style>
+.signup-form {
+  margin-top: 60px;
+}
 </style>
