@@ -3,17 +3,19 @@
     <v-layout justify-center>
       <div v-if="error">
         <h1>{{error}}</h1>
-        <h1>Please log in to continue</h1>
+        <!-- <h1>Please log in to continue</h1> -->
       </div>
     </v-layout>
     <v-layout justify-center align-center column>
-      <v-flex xs12 md6 lg6 v-for="test in tests" :key="test._id">
-        <v-toolbar color="grey lighten-4" width="400">
-          <v-toolbar-title>{{ test.name }}</v-toolbar-title>
+      <v-flex xs12 md6 lg6 v-for="(test, i) in tests" :key="test._id">
+        <v-toolbar class="pa-5 mb-4" color="grey lighten-4" width="400" height="150">
+          <v-layout column>
+            <v-toolbar-title>{{ test.name }}</v-toolbar-title>
+            <v-text-field class="mt-2" type="password" v-model="passwords[i]" label="Password"></v-text-field>
+            <p class="red--text" v-if="feedback">{{ feedback }}</p>
+          </v-layout>
           <v-spacer></v-spacer>
-          <v-btn :to="{ name:  'testdetail' , params: {
-            testId: test._id
-          }}">
+          <v-btn @click="enter(test._id, i)">
             <v-icon>exit_to_app</v-icon>
           </v-btn>
         </v-toolbar>
@@ -28,18 +30,35 @@ export default {
   data() {
     return {
       tests: [],
-      error: null
+      error: null,
+      passwords: {},
+      feedback: null
     };
   },
   mounted() {
     TestService.testindex()
       .then(res => {
-        console.log(res.data);
         this.tests = res.data;
       })
       .catch(err => {
         this.error = err;
       });
+  },
+  methods: {
+    enter(id, i) {
+      TestService.access({
+        id,
+        password: this.passwords[i]
+      })
+        .then(res => {
+          this.feedback = res.data.message;
+          this.$router.push({ name: 'testdetail', params: { testId: id } });
+        })
+        .catch(err => {
+          this.feedback = err.response.data.error;
+          this.passwords = {};
+        });
+    }
   }
 };
 </script>

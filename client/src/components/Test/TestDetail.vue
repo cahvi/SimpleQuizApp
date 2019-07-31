@@ -3,7 +3,7 @@
     <v-layout justify-center>
       <div v-if="error">
         <h1>{{ error }}</h1>
-        <h1>Please log in to continue</h1>
+        <!-- <h1>Please log in to continue</h1> -->
       </div>
 
       <h1 v-if="test">Do {{ test.name }}</h1>

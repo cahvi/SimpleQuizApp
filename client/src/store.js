@@ -7,14 +7,10 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   strict: true,
   state: {
-    token: null,
     user: null,
     isLoggedIn: false
   },
   mutations: {
-    setToken(state, token) {
-      state.token = token;
-    },
     setUser(state, user) {
       state.user = user;
       if (user) {
@@ -25,9 +21,6 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    setToken({ commit }, token) {
-      commit('setToken', token);
-    },
     setUser({ commit }, user) {
       commit('setUser', user);
     },

@@ -9,6 +9,7 @@ const isAuthenticated = passport.authenticate('jwt', { session: false });
 
 module.exports = app => {
   app.get('/tests', isAuthenticated, TestController.index);
+  app.post('/tests/access', isAuthenticated, TestController.access);
   app.get('/tests/:testId', isAuthenticated, TestController.show);
   app.post('/tests', isAuthenticated, TestController.post);
 

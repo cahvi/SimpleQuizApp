@@ -1,7 +1,6 @@
 <template>
   <nav>
     <v-toolbar color="black">
-      <v-icon class="white--text pa-2">exit_to_app</v-icon>
       <router-link tag="span" class="home mx-3" :to="{ name: 'tests' }">
         <v-toolbar-title class="white--text">Tests</v-toolbar-title>
       </router-link>
@@ -33,7 +32,6 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('setUser', null);
-      this.$store.dispatch('setToken', null);
       window.localStorage.removeItem('token');
     }
   }
