@@ -72,5 +72,54 @@ module.exports = {
           error: 'Enter a password'
         });
       });
+  },
+  sendanswer(req, res) {
+    // find correct question & answer
+    // check if it's correct or false
+    // send back a response
   }
 };
+
+// {
+// 	"name": "Tyhmyys tentti",
+// 	"password": "ohjelmointi",
+// 	"questions": [
+// 		{
+// 			"question": "Oletko tyhmä?",
+// 			"points": 2,
+// 			"answers": [
+// 				{
+// 					"answer": "En",
+// 					"correct": false
+// 				},
+// 				{
+// 					"answer": "Kyllä",
+// 					"correct": true
+// 				},
+// 				{
+// 					"answer": "En tiedä",
+// 					"correct": false
+// 				}
+// 			]
+// 		},
+// 				{
+// 			"question": "Etkö ole tyhmä?",
+// 			"points": 2,
+// 			"answers": [
+// 				{
+// 					"answer": "En",
+// 					"correct": false
+// 				},
+// 				{
+// 					"answer": "Kyllä",
+// 					"correct": true
+// 				},
+// 				{
+// 					"answer": "En tiedä",
+// 					"correct": false
+// 				}
+// 			]
+// 		}
+// 	],
+// 	"maxpoints": 10
+// }
