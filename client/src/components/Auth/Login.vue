@@ -58,7 +58,7 @@ export default {
         .then(res => {
           this.$store.dispatch('setUser', res.data.user);
           window.localStorage.setItem('token', res.data.token);
-          this.$router.push({ name: 'index' });
+          this.$router.push({ name: 'tests' });
         })
         .catch(err => {
           this.error = err.response.data.error;

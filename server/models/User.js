@@ -11,7 +11,10 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  role: String
+  role: {
+    type: String,
+    unique: true
+  }
 });
 
 UserSchema.pre('save', function(next) {

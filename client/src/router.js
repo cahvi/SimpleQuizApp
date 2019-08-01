@@ -3,7 +3,6 @@ import Router from 'vue-router';
 import Register from './components/Auth/Register';
 import SecurePage from './components/SecurePage';
 import Login from './components/Auth/Login';
-import Index from './components/Index';
 import TestIndex from './components/Test/TestIndex';
 import TestDetail from './components/Test/TestDetail';
 
@@ -24,11 +23,6 @@ export default new Router({
       component: Login
     },
     {
-      path: '/',
-      name: 'index',
-      component: Index
-    },
-    {
       path: '/securepage',
       name: 'securepage',
       component: SecurePage
@@ -42,6 +36,10 @@ export default new Router({
       path: '/tests/:testId',
       name: 'testdetail',
       component: TestDetail
+    },
+    {
+      path: '*',
+      redirect: 'register'
     }
   ]
 });

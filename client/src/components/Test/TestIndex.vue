@@ -8,13 +8,15 @@
     </v-layout>
     <v-layout justify-center align-center column>
       <v-flex xs12 md6 lg6 v-for="(test, i) in tests" :key="test._id">
-        <v-toolbar class="pa-5 mb-4" color="grey lighten-4" width="400" height="150">
+        <v-toolbar class="pa-5 mb-4" color="grey lighten-4" width="600" height="150">
           <v-layout column>
             <v-toolbar-title>{{ test.name }}</v-toolbar-title>
             <v-text-field class="mt-2" type="password" v-model="passwords[i]" label="Password"></v-text-field>
-            <p class="red--text" v-if="feedback">{{ feedback }}</p>
+
+            <p v-if="feedback" class="red--text">{{ feedback }}</p>
           </v-layout>
           <v-spacer></v-spacer>
+          <v-layout></v-layout>
           <v-btn @click="enter(test._id, i)">
             <v-icon>exit_to_app</v-icon>
           </v-btn>
@@ -51,7 +53,6 @@ export default {
         password: this.passwords[i]
       })
         .then(res => {
-          this.feedback = res.data.message;
           this.$router.push({ name: 'testdetail', params: { testId: id } });
         })
         .catch(err => {

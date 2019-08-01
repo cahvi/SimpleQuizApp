@@ -10,7 +10,21 @@ const TestSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  questions: [
+    {
+      question: String,
+      points: Number,
+      answers: [
+        {
+          answer: String,
+          correct: Boolean
+        }
+      ]
+    }
+  ],
+
+  maxpoints: Number
 });
 
 TestSchema.pre('save', function(next) {
