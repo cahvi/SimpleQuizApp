@@ -10,5 +10,17 @@ export default {
 
   testdetail(testId) {
     return Api().get(`tests/${testId}`);
+  },
+
+  sendanswer(info) {
+    console.log(
+      'testId: ',
+      info.test + ' ' + 'questionId: ',
+      info.question + ' ' + 'answerId: ',
+      info.answer
+    );
+    return Api().post(`tests/${info.test}`, {
+      question: info.question
+    });
   }
 };

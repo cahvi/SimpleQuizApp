@@ -74,52 +74,12 @@ module.exports = {
       });
   },
   sendanswer(req, res) {
-    // find correct question & answer
-    // check if it's correct or false
-    // send back a response
+    let questionId = req.body.questionId;
+
+    Test.findById(req.params.testId).then(test => {
+      console.log('TESTI:', test);
+    });
+
+    res.status(200).send('ok');
   }
 };
-
-// {
-// 	"name": "Tyhmyys tentti",
-// 	"password": "ohjelmointi",
-// 	"questions": [
-// 		{
-// 			"question": "Oletko tyhmä?",
-// 			"points": 2,
-// 			"answers": [
-// 				{
-// 					"answer": "En",
-// 					"correct": false
-// 				},
-// 				{
-// 					"answer": "Kyllä",
-// 					"correct": true
-// 				},
-// 				{
-// 					"answer": "En tiedä",
-// 					"correct": false
-// 				}
-// 			]
-// 		},
-// 				{
-// 			"question": "Etkö ole tyhmä?",
-// 			"points": 2,
-// 			"answers": [
-// 				{
-// 					"answer": "En",
-// 					"correct": false
-// 				},
-// 				{
-// 					"answer": "Kyllä",
-// 					"correct": true
-// 				},
-// 				{
-// 					"answer": "En tiedä",
-// 					"correct": false
-// 				}
-// 			]
-// 		}
-// 	],
-// 	"maxpoints": 10
-// }

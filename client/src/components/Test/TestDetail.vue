@@ -3,7 +3,6 @@
     <v-layout justify-center>
       <div v-if="error">
         <h1>{{ error }}</h1>
-        <!-- <h1>Please log in to continue</h1> -->
       </div>
     </v-layout>
     <h3 v-if="test" class="grey--text">{{ test.name }}</h3>
@@ -15,12 +14,17 @@
         :key="i"
       >
         <v-card-text class="grey--text">{{ question.question }}</v-card-text>
+        <v-layout align-center justify-end>
+          <p class="grey--text mr-5">Attemps left: {{ attemps }}</p>
+        </v-layout>
         <v-card-actions>
-          <v-radio-group v-for="(answer, i) in question.answers" :key="i" row>
-            <v-radio :label="answer.answer"></v-radio>
-          </v-radio-group>
-          <v-spacer></v-spacer>
-          <v-btn medium text class="green lighten-4 mx-4">Submit</v-btn>
+          <div v-for="answer in question.answers" :key="answer._id">
+            <v-checkbox
+              v-on:change="sendAnswer(test._id, question._id, answer._id)"
+              class="mx-2"
+              :label="answer.answer"
+            ></v-checkbox>
+          </div>
         </v-card-actions>
       </v-card>
     </v-layout>
@@ -33,7 +37,8 @@ export default {
   data() {
     return {
       test: null,
-      error: null
+      error: null,
+      attemps: 3
     };
   },
   mounted() {
@@ -45,6 +50,15 @@ export default {
       .catch(err => {
         this.error = err;
       });
+  },
+  methods: {
+    sendAnswer(test, question, answer) {
+      TestService.sendanswer({
+        test,
+        question,
+        answer
+      });
+    }
   }
 };
 </script>

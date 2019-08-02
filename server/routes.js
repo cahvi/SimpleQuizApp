@@ -18,3 +18,5 @@ module.exports = app => {
   app.post('/login', AuthenticationController.login);
   app.get('/getuser', isAuthenticated, AuthenticationController.getuser);
 };
+
+//TODO: API
