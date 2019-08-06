@@ -74,12 +74,24 @@ module.exports = {
       });
   },
   sendanswer(req, res) {
-    let questionId = req.body.questionId;
+    let questionIndex = req.body.question;
+    let answerIndex = req.body.answer;
+    let testId = req.params.testId;
 
-    Test.findById(req.params.testId).then(test => {
-      console.log('TESTI:', test);
-    });
-
-    res.status(200).send('ok');
+    Test.findById(testId)
+      .then(test => {
+        if (
+          test.questions[questionIndex].answers[answerIndex].correct === true
+        ) {
+          res.status(200).send('Correct answer!');
+        } else {
+          res.status(200).send('Wrong answer.');
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          error: err
+        });
+      });
   }
 };

@@ -3,7 +3,6 @@
     <v-layout justify-center>
       <div v-if="error">
         <h1>{{error}}</h1>
-        <!-- <h1>Please log in to continue</h1> -->
       </div>
     </v-layout>
     <v-layout justify-center align-center column>
@@ -48,6 +47,7 @@ export default {
   },
   methods: {
     enter(id, i) {
+      console.log(i);
       TestService.access({
         id,
         password: this.passwords[i]

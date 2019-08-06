@@ -8,16 +8,9 @@
       <v-spacer></v-spacer>
 
       <v-toolbar-items>
-        <router-link tag="button" :to="{name: 'login'}">
-          <v-btn v-if="!isLoggedIn" text>Login</v-btn>
-        </router-link>
-        <router-link tag="button" :to="{name: 'register'}">
-          <v-btn v-if="!isLoggedIn" text>Sign up</v-btn>
-        </router-link>
-        <v-btn v-if="user" text>{{user.username}}</v-btn>
-        <router-link tag="button" :to="{name: 'register'}">
-          <v-btn v-if="isLoggedIn" @click="logout" text>Logout</v-btn>
-        </router-link>
+        <v-btn v-if="!isLoggedIn" text :to="{ name: 'login' }">Login</v-btn>
+        <v-btn v-if="!isLoggedIn" text :to="{ name: 'register' }">Register</v-btn>
+        <v-btn text v-if="isLoggedIn" @click="logout">Logout</v-btn>
       </v-toolbar-items>
     </v-app-bar>
   </nav>
@@ -33,6 +26,7 @@ export default {
     logout() {
       this.$store.dispatch('setUser', null);
       window.localStorage.removeItem('token');
+      this.$router.push({ name: 'login' });
     }
   }
 };

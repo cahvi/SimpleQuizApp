@@ -10,21 +10,22 @@
       <v-card
         width="600"
         class="grey lighten-4 my-5"
-        v-for="(question, i) in test.questions"
-        :key="i"
+        v-for="(question, questionIndex) in test.questions"
+        :key="questionIndex"
       >
         <v-card-text class="grey--text">{{ question.question }}</v-card-text>
         <v-layout align-center justify-end>
           <p class="grey--text mr-5">Attemps left: {{ attemps }}</p>
         </v-layout>
         <v-card-actions>
-          <div v-for="answer in question.answers" :key="answer._id">
+          <div v-for="(answer, answerIndex) in question.answers" :key="answerIndex">
             <v-checkbox
-              v-on:change="sendAnswer(test._id, question._id, answer._id)"
+              v-on:change="sendAnswer(test._id, questionIndex, answerIndex)"
               class="mx-2"
               :label="answer.answer"
             ></v-checkbox>
           </div>
+          <p v-if="feedback" class="ml-5 mt-2">{{ feedback }}</p>
         </v-card-actions>
       </v-card>
     </v-layout>
@@ -38,7 +39,8 @@ export default {
     return {
       test: null,
       error: null,
-      attemps: 3
+      attemps: 3,
+      feedback: null
     };
   },
   mounted() {
@@ -57,7 +59,14 @@ export default {
         test,
         question,
         answer
-      });
+      })
+        .then(res => {
+          this.attemps--;
+          this.feedback = res.data;
+        })
+        .catch(err => {
+          this.feedback = err;
+        });
     }
   }
 };

@@ -4,8 +4,8 @@
       <v-flex xs12 sm8 md4>
         <div class="signup-form">
           <v-card class="grey lighten-4">
-            <v-toolbar color="black lighten-5">
-              <v-toolbar-title class="white--text">Sign up</v-toolbar-title>
+            <v-toolbar color="grey lighten-3">
+              <v-toolbar-title>Sign up</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
               <v-form>
@@ -29,7 +29,7 @@
               <p class="red--text" v-if="error">{{error}}</p>
               <v-spacer></v-spacer>
 
-              <v-btn color="black" dark @click="signUp">Sign up</v-btn>
+              <v-btn color="green lighten-2" @click="signUp">Sign up</v-btn>
             </v-card-actions>
           </v-card>
         </div>
