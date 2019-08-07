@@ -12,20 +12,31 @@
         class="grey lighten-4 my-5"
         v-for="(question, questionIndex) in test.questions"
         :key="questionIndex"
+        :disabled="question.isDone"
       >
         <v-card-text class="grey--text">{{ question.question }}</v-card-text>
         <v-layout align-center justify-end>
-          <p class="grey--text mr-5">Attemps left: {{ attemps }}</p>
+          <p
+            class="grey--text mr-5"
+            v-if="question.attemps >= 0"
+          >Attemps left: {{ question.attemps }}</p>
+          <p v-else class="grey--text mr-5">Attemps left: 3</p>
         </v-layout>
         <v-card-actions>
           <div v-for="(answer, answerIndex) in question.answers" :key="answerIndex">
             <v-checkbox
-              v-on:change="sendAnswer(test._id, questionIndex, answerIndex)"
+              @change="sendAnswer(test._id, questionIndex, answerIndex)"
               class="mx-2"
               :label="answer.answer"
+              :disabled="answer.checked"
             ></v-checkbox>
           </div>
-          <p v-if="feedback" class="ml-5 mt-2">{{ feedback }}</p>
+          <v-icon
+            large
+            class="green--text ml-5"
+            v-if="question.feedback == 'Correct answer!'"
+          >checkmark</v-icon>
+          <v-icon class="red--text ml-5 mb-2" v-if="question.feedback == 'Wrong answer.'">error</v-icon>
         </v-card-actions>
       </v-card>
     </v-layout>
@@ -34,13 +45,12 @@
 
 <script>
 import TestService from '@/services/TestService';
+import { mapState } from 'vuex';
 export default {
   data() {
     return {
       test: null,
-      error: null,
-      attemps: 3,
-      feedback: null
+      error: null
     };
   },
   mounted() {
@@ -53,19 +63,32 @@ export default {
         this.error = err;
       });
   },
+  computed: {
+    ...mapState(['attemps'])
+  },
+
   methods: {
     sendAnswer(test, question, answer) {
+      this.$set(this.test.questions[question].answers[answer], 'checked', true);
+
       TestService.sendanswer({
         test,
         question,
         answer
       })
         .then(res => {
-          this.attemps--;
-          this.feedback = res.data;
+          this.$set(this.test.questions[question], 'feedback', res.data);
+
+          if (res.data == 'Correct answer!') {
+            this.$set(this.test.questions[question], 'isDone', true);
+          }
+          if (!this.test.questions[question].attemps) {
+            this.$set(this.test.questions[question], 'attemps', 3);
+          }
+          this.test.questions[question].attemps--;
         })
         .catch(err => {
-          this.feedback = err;
+          console.log(err);
         });
     }
   }

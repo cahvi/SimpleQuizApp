@@ -8,7 +8,8 @@ export default new Vuex.Store({
   strict: true,
   state: {
     user: null,
-    isLoggedIn: false
+    isLoggedIn: false,
+    attemps: 3
   },
   mutations: {
     setUser(state, user) {
@@ -18,6 +19,9 @@ export default new Vuex.Store({
       } else {
         state.isLoggedIn = false;
       }
+    },
+    setAttemps(state) {
+      state.attemps > 0 ? state.attemps-- : (state.attemps = 0);
     }
   },
   actions: {
@@ -31,6 +35,9 @@ export default new Vuex.Store({
           commit('setUser', res.data);
         })
         .catch(err => console.log(err));
+    },
+    setAttemps({ commit }, attemp) {
+      commit('setAttemps', attemp);
     }
   }
 });

@@ -12,7 +12,7 @@
             <v-toolbar-title>{{ test.name }}</v-toolbar-title>
             <v-text-field class="mt-2" type="password" v-model="passwords[i]" label="Password"></v-text-field>
 
-            <p v-if="feedback" class="red--text">{{ feedback }}</p>
+            <p v-if="test.feedback" class="red--text">{{ test.feedback }}</p>
           </v-layout>
           <v-spacer></v-spacer>
           <v-layout></v-layout>
@@ -32,8 +32,7 @@ export default {
     return {
       tests: [],
       error: null,
-      passwords: {},
-      feedback: null
+      passwords: {}
     };
   },
   mounted() {
@@ -47,7 +46,6 @@ export default {
   },
   methods: {
     enter(id, i) {
-      console.log(i);
       TestService.access({
         id,
         password: this.passwords[i]
@@ -56,7 +54,7 @@ export default {
           this.$router.push({ name: 'testdetail', params: { testId: id } });
         })
         .catch(err => {
-          this.feedback = err.response.data.error;
+          this.$set(this.tests[i], 'feedback', err.response.data.error);
           this.passwords = {};
         });
     }
