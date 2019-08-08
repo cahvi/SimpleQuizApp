@@ -14,10 +14,14 @@ const TestSchema = mongoose.Schema({
   questions: [
     {
       question: String,
+      feedback: String,
+      isDone: Boolean,
+      attemps: Number,
       points: Number,
       answers: [
         {
           answer: String,
+          checked: Boolean,
           correct: Boolean
         }
       ]

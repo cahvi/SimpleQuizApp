@@ -19,7 +19,7 @@
           <p
             class="grey--text mr-5"
             v-if="question.attemps >= 0"
-          >Attemps left: {{ question.attemps }}</p>
+          >Attemps left: {{ getTest.questions[questionIndex].attemps }}</p>
           <p v-else class="grey--text mr-5">Attemps left: 3</p>
         </v-layout>
         <v-card-actions>
@@ -45,7 +45,7 @@
 
 <script>
 import TestService from '@/services/TestService';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -58,32 +58,48 @@ export default {
     TestService.testdetail(testId)
       .then(res => {
         this.test = res.data;
+        this.$store.dispatch('setTest', res.data);
       })
       .catch(err => {
         this.error = err;
       });
   },
   computed: {
-    ...mapState(['attemps'])
+    ...mapState(['attemps']),
+    ...mapGetters(['getTest'])
   },
 
   methods: {
     sendAnswer(test, question, answer) {
-      this.$set(this.test.questions[question].answers[answer], 'checked', true);
-
+      this.$store.dispatch(
+        'setAnswer',
+        this.$set(
+          this.test.questions[question].answers[answer],
+          'checked',
+          true
+        )
+      );
       TestService.sendanswer({
         test,
         question,
         answer
       })
         .then(res => {
-          this.$set(this.test.questions[question], 'feedback', res.data);
-
+          this.$store.dispatch(
+            'setFeedback',
+            this.$set(this.test.questions[question], 'feedback', res.data)
+          );
           if (res.data == 'Correct answer!') {
-            this.$set(this.test.questions[question], 'isDone', true);
+            this.$store.dispatch(
+              'setQuestionDone',
+              this.$set(this.test.questions[question], 'isDone', true)
+            );
           }
           if (!this.test.questions[question].attemps) {
-            this.$set(this.test.questions[question], 'attemps', 3);
+            this.$store.dispatch(
+              'setQuestionAttemps',
+              this.$set(this.test.questions[question], 'attemps', 3)
+            );
           }
           this.test.questions[question].attemps--;
         })

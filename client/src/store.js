@@ -5,13 +5,42 @@ import Api from './services/Api';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  strict: true,
   state: {
+    //user
     user: null,
     isLoggedIn: false,
-    attemps: 3
+
+    //test
+    test: {
+      name: '',
+      password: '',
+      questions: [
+        {
+          question: '',
+          points: null,
+          answers: [
+            {
+              correct: null,
+              answer: ''
+            },
+            {
+              correct: null,
+              answer: ''
+            },
+            {
+              correct: null,
+              answer: ''
+            }
+          ]
+        }
+      ]
+    }
+  },
+  getters: {
+    getTest: ({ test }) => test
   },
   mutations: {
+    //User mutations
     setUser(state, user) {
       state.user = user;
       if (user) {
@@ -20,11 +49,26 @@ export default new Vuex.Store({
         state.isLoggedIn = false;
       }
     },
-    setAttemps(state) {
-      state.attemps > 0 ? state.attemps-- : (state.attemps = 0);
+
+    //Test mutations
+    setTest(state, test) {
+      state.test = test;
+    },
+    setAnswer(state, answer) {
+      state.test.answers = answer;
+    },
+    setFeedback(state, feedback) {
+      state.test.question = feedback;
+    },
+    setQuestionDone(state, done) {
+      state.test.question = done;
+    },
+    setQuestionAttemps(state, attemp) {
+      state.test.question = attemp;
     }
   },
   actions: {
+    //User actions
     setUser({ commit }, user) {
       commit('setUser', user);
     },
@@ -36,8 +80,22 @@ export default new Vuex.Store({
         })
         .catch(err => console.log(err));
     },
-    setAttemps({ commit }, attemp) {
-      commit('setAttemps', attemp);
+
+    //Test actions
+    setTest({ commit }, test) {
+      commit('setTest', test);
+    },
+    setAnswer({ commit }, answer) {
+      commit('setAnswer', answer);
+    },
+    setFeedback({ commit }, feedback) {
+      commit('setAnswer', feedback);
+    },
+    setQuestionDone({ commit }, done) {
+      commit('setQuestionDone', done);
+    },
+    setQuestionAttemps({ commit }, attemp) {
+      commit('setQuestionAttemps', attemp);
     }
   }
 });
