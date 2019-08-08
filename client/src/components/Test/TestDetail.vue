@@ -65,43 +65,31 @@ export default {
       });
   },
   computed: {
-    ...mapState(['attemps']),
     ...mapGetters(['getTest'])
   },
 
   methods: {
     sendAnswer(test, question, answer) {
-      this.$store.dispatch(
-        'setAnswer',
-        this.$set(
-          this.test.questions[question].answers[answer],
-          'checked',
-          true
-        )
-      );
+      this.$store.dispatch('setAnswer', {
+        questionIndex: question,
+        answerIndex: answer
+      });
+
       TestService.sendanswer({
         test,
         question,
         answer
       })
         .then(res => {
-          this.$store.dispatch(
-            'setFeedback',
-            this.$set(this.test.questions[question], 'feedback', res.data)
-          );
-          if (res.data == 'Correct answer!') {
-            this.$store.dispatch(
-              'setQuestionDone',
-              this.$set(this.test.questions[question], 'isDone', true)
-            );
-          }
-          if (!this.test.questions[question].attemps) {
-            this.$store.dispatch(
-              'setQuestionAttemps',
-              this.$set(this.test.questions[question], 'attemps', 3)
-            );
-          }
-          this.test.questions[question].attemps--;
+          this.$store.dispatch('setFeedback', {
+            feedback: res.data,
+            index: question
+          });
+
+          this.$store.dispatch('setQuestionAttemps', {
+            attemps: this.getTest.questions[question].attemps - 1,
+            index: question
+          });
         })
         .catch(err => {
           console.log(err);

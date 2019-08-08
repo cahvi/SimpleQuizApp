@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Api from './services/Api';
-
+import createPersistedState from 'vuex-persistedstate';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  plugins: [createPersistedState()],
   state: {
     //user
     user: null,
@@ -17,17 +18,13 @@ export default new Vuex.Store({
       questions: [
         {
           question: '',
+          feedback: null,
+          isDone: false,
+          attemps: null,
           points: null,
           answers: [
             {
-              correct: null,
-              answer: ''
-            },
-            {
-              correct: null,
-              answer: ''
-            },
-            {
+              checked: false,
               correct: null,
               answer: ''
             }
@@ -55,16 +52,19 @@ export default new Vuex.Store({
       state.test = test;
     },
     setAnswer(state, answer) {
-      state.test.answers = answer;
+      state.test.questions[answer.questionIndex].answers[
+        answer.answerIndex
+      ].checked = true;
     },
     setFeedback(state, feedback) {
-      state.test.question = feedback;
-    },
-    setQuestionDone(state, done) {
-      state.test.question = done;
+      state.test.questions[feedback.index].feedback = feedback.feedback;
+
+      feedback.feedback == 'Correct answer!'
+        ? (state.test.questions[feedback.index].isDone = true)
+        : '';
     },
     setQuestionAttemps(state, attemp) {
-      state.test.question = attemp;
+      state.test.questions[attemp.index].attemps = attemp.attemps;
     }
   },
   actions: {
@@ -89,10 +89,7 @@ export default new Vuex.Store({
       commit('setAnswer', answer);
     },
     setFeedback({ commit }, feedback) {
-      commit('setAnswer', feedback);
-    },
-    setQuestionDone({ commit }, done) {
-      commit('setQuestionDone', done);
+      commit('setFeedback', feedback);
     },
     setQuestionAttemps({ commit }, attemp) {
       commit('setQuestionAttemps', attemp);
