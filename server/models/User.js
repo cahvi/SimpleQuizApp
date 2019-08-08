@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
+//TODO: add testprogress
 const UserSchema = mongoose.Schema({
   username: {
     type: String,

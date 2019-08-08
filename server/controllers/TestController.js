@@ -93,5 +93,15 @@ module.exports = {
           error: err
         });
       });
+  },
+  testprogress(req, res) {
+    console.log('hep');
+
+    //TODO: get user test progress
+  },
+  testprogress_post(req, res) {
+    console.log(req.body);
+
+    //TODO: save progress to current user
   }
 };

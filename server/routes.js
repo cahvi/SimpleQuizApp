@@ -13,6 +13,12 @@ module.exports = app => {
   app.get('/tests/:testId', isAuthenticated, TestController.show);
   app.post('/tests/:testId', isAuthenticated, TestController.sendanswer);
   app.post('/tests', isAuthenticated, TestController.post);
+  app.get('/testprogress', isAuthenticated, TestController.testprogress);
+  app.post(
+    '/testprogress/post',
+    isAuthenticated,
+    TestController.testprogress_post
+  );
 
   app.post('/register', AuthenticationController.register);
   app.post('/login', AuthenticationController.login);

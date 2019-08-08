@@ -6,5 +6,11 @@ export default {
   },
   login(credentials) {
     return Api().post('login', credentials);
+  },
+  getprog() {
+    return Api().get('testprogress');
+  },
+  progress(test) {
+    return Api().post('testprogress/post', test);
   }
 };

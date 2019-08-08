@@ -45,6 +45,7 @@
 
 <script>
 import TestService from '@/services/TestService';
+import AuthenticationService from '@/services/AuthenticationService';
 import { mapState, mapGetters } from 'vuex';
 export default {
   data() {
@@ -94,6 +95,10 @@ export default {
         .catch(err => {
           console.log(err);
         });
+
+      //TODO: save progress to user
+      // AuthenticationService.progress(this.getTest);
+      // AuthenticationService.prog();
     }
   }
 };
