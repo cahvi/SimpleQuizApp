@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Register from './components/Auth/Register';
-import SecurePage from './components/SecurePage';
 import Login from './components/Auth/Login';
 import TestIndex from './components/Test/TestIndex';
 import TestDetail from './components/Test/TestDetail';
@@ -21,11 +20,6 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
-    },
-    {
-      path: '/securepage',
-      name: 'securepage',
-      component: SecurePage
     },
     {
       path: '/tests',

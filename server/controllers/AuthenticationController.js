@@ -4,13 +4,9 @@ const config = require('../config/config');
 
 function jwtSignUser(user) {
   const EIGHT_HOURS = 60 * 60 * 8;
-  return jwt.sign(
-    { username: user.username, password: user.password },
-    config.authentication.jwtSecret,
-    {
-      expiresIn: EIGHT_HOURS
-    }
-  );
+  return jwt.sign(user, config.authentication.jwtSecret, {
+    expiresIn: EIGHT_HOURS
+  });
 }
 
 module.exports = {
@@ -23,12 +19,11 @@ module.exports = {
         res.send({
           user: result.toJSON()
         });
-        console.log(`${result} created!`);
       })
       .catch(err => {
-        console.log(err);
         res.status(400).send({
-          error: 'Username already taken'
+          error: 'Username already taken',
+          err
         });
       });
   },
@@ -55,7 +50,11 @@ module.exports = {
 
         res.status(200).send({
           user: user.toJSON(),
-          token: jwtSignUser(user.toJSON())
+          token: jwtSignUser({
+            _id: user._id,
+            username: user.username,
+            password: user.password
+          })
         });
       })
       .catch(err => {

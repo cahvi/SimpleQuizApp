@@ -5,11 +5,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    //user
     user: null,
     isLoggedIn: false,
 
-    //test
     test: []
   },
   getters: {
@@ -44,6 +42,24 @@ export default new Vuex.Store({
     },
     setQuestionAttemps(state, attemp) {
       state.test.questions[attemp.index].attemps = attemp.attemps;
+
+      state.test.questions[attemp.index].attemps == 2 &&
+      state.test.questions[attemp.index].isDone == true
+        ? (state.test.questions[attemp.index].userpoints = 3)
+        : (state.test.questions[attemp.index].userpoints =
+            state.test.questions[attemp.index].userpoints);
+
+      state.test.questions[attemp.index].attemps == 1 &&
+      state.test.questions[attemp.index].isDone == true
+        ? (state.test.questions[attemp.index].userpoints = 2)
+        : (state.test.questions[attemp.index].userpoints =
+            state.test.questions[attemp.index].userpoints);
+
+      state.test.questions[attemp.index].attemps == 0 &&
+      state.test.questions[attemp.index].isDone == true
+        ? (state.test.questions[attemp.index].userpoints = 1)
+        : (state.test.questions[attemp.index].userpoints =
+            state.test.questions[attemp.index].userpoints);
     }
   },
   actions: {

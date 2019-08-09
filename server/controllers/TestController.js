@@ -21,8 +21,6 @@ module.exports = {
           .save()
           .then(test => {
             res.status(200).send(test);
-
-            console.log(`${test} created!`);
           })
           .catch(err => {
             res.status(500).send(err);
@@ -40,7 +38,6 @@ module.exports = {
         res.status(200).send(test);
       })
       .catch(err => {
-        console.log(err);
         res.status(500).send(err);
       });
   },
@@ -67,7 +64,6 @@ module.exports = {
         });
       })
       .catch(err => {
-        console.log(err);
         res.status(500).send({
           error: 'Enter a password'
         });
@@ -119,12 +115,15 @@ module.exports = {
   testprogress_post(req, res) {
     const test = req.body;
     const user = req.user;
-
     User.findById(user._id)
       .then(user => {
         user.testprogresses.push(test);
         user.save();
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        res.status(500).send(err);
+      });
+
+    res.status(200).send('Ok');
   }
 };

@@ -14,6 +14,7 @@ const TestSchema = mongoose.Schema({
   questions: [
     {
       question: String,
+      userpoints: Number,
       feedback: String,
       isDone: Boolean,
       attemps: Number,

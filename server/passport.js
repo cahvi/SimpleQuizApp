@@ -12,6 +12,7 @@ module.exports.jwtLogin = new JwtStrategy(
     secretOrKey: config.authentication.jwtSecret
   },
   function(jwtPayload, done) {
+    console.log('JWT PAYLOAD:', jwtPayload);
     console.log('tässä id:', jwtPayload._id);
     User.findOne({ _id: jwtPayload._id })
       .exec()

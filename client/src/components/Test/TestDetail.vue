@@ -5,7 +5,7 @@
         <h1>{{ error }}</h1>
       </div>
     </v-layout>
-    <h3 v-if="test" class="grey--text">{{ test.name }}</h3>
+    <h3 v-if="test" class="grey--text">{{ test.name + ' (max. points ' + test.maxpoints + ')' }}</h3>
     <v-layout class="my-5" v-if="test" align-center justify-center column>
       <v-card
         width="600"
@@ -29,7 +29,7 @@
               class="mx-2"
               :label="answer.answer"
               :disabled="answer.checked"
-              :success="answer.checked"
+              v-model="getTest.questions[questionIndex].answers[answerIndex].checked"
             ></v-checkbox>
           </div>
           <v-icon
@@ -38,8 +38,23 @@
             v-if="question.feedback == 'Correct answer!'"
           >checkmark</v-icon>
           <v-icon class="red--text ml-5 mb-2" v-if="question.feedback == 'Wrong answer.'">error</v-icon>
+          <v-layout justify-end>
+            <p
+              v-if="getTest.questions[questionIndex].userpoints != null"
+              class="grey--text mr-5"
+            >{{getTest.questions[questionIndex].userpoints + '/' + getTest.questions[questionIndex].points + 'p'}}</p>
+            <p
+              v-else
+              class="grey--text mr-5"
+            >{{'/' + getTest.questions[questionIndex].points + 'p'}}</p>
+          </v-layout>
         </v-card-actions>
       </v-card>
+      <v-btn text @click="showResult">Submit!</v-btn>
+      <p
+        v-if="score"
+        class="grey--text mt-5"
+      >You got {{ score }} points out of {{ getTest.maxpoints }}!</p>
     </v-layout>
   </v-container>
 </template>
@@ -52,33 +67,30 @@ export default {
   data() {
     return {
       test: null,
-      index: null,
-      error: null
+      error: null,
+      score: null
     };
   },
   mounted() {
     AuthenticationService.getprog(this.$route.params.testId)
       .then(res => {
-        let data = res.data;
-        let correctData = data[data.length - 1];
-        console.log(correctData._id);
-        if ((correctData._id = this.$route.params.testId)) {
-          this.test = correctData;
-          this.$store.dispatch('setTest', this.test);
+        if (!res.data.length) {
+          TestService.testdetail(this.$route.params.testId).then(response => {
+            this.test = response.data;
+            this.$store.dispatch('setTest', response.data);
+          });
+        } else {
+          let data = res.data;
+          let correctData = data[data.length - 1];
+          if ((correctData._id = this.$route.params.testId)) {
+            this.test = correctData;
+            this.$store.dispatch('setTest', this.test);
+          }
         }
       })
       .catch(err => {
         this.error = err;
       });
-
-    // if ((this.noProg = true)) {
-    //   const testId = this.$route.params.testId;
-    //   TestService.testdetail(testId).then(res => {
-    //     console.log(res.data);
-    //     this.test = res.data;
-    //     this.$store.dispatch('setTest', res.data);
-    //   });
-    // }
   },
   computed: {
     ...mapGetters(['getTest'])
@@ -88,8 +100,7 @@ export default {
     sendAnswer(test, question, answer) {
       this.$store.dispatch('setAnswer', {
         questionIndex: question,
-        answerIndex: answer,
-        testIndex: this.index
+        answerIndex: answer
       });
 
       TestService.sendanswer({
@@ -100,14 +111,12 @@ export default {
         .then(res => {
           this.$store.dispatch('setFeedback', {
             feedback: res.data,
-            index: question,
-            testIndex: this.index
+            index: question
           });
 
           this.$store.dispatch('setQuestionAttemps', {
             attemps: this.getTest.questions[question].attemps - 1,
-            index: question,
-            testIndex: this.index
+            index: question
           });
 
           AuthenticationService.progress(this.getTest);
@@ -115,6 +124,11 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    showResult() {
+      let scores = this.getTest.questions.map(points => points.userpoints);
+      const sum = scores.reduce((partial_sum, a) => partial_sum + a, 0);
+      this.score = sum;
     }
   }
 };
