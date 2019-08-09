@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-//TODO: add testprogress
+//TODO: fix me
 const UserSchema = mongoose.Schema({
   username: {
     type: String,
@@ -13,9 +13,9 @@ const UserSchema = mongoose.Schema({
     required: true
   },
   role: {
-    type: String,
-    unique: true
-  }
+    type: String
+  },
+  testprogresses: Array
 });
 
 UserSchema.pre('save', function(next) {

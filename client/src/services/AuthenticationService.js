@@ -7,8 +7,8 @@ export default {
   login(credentials) {
     return Api().post('login', credentials);
   },
-  getprog() {
-    return Api().get('testprogress');
+  getprog(testId) {
+    return Api().get(`/testprogress/${testId}`);
   },
   progress(test) {
     return Api().post('testprogress/post', test);

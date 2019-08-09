@@ -4,9 +4,13 @@ const config = require('../config/config');
 
 function jwtSignUser(user) {
   const EIGHT_HOURS = 60 * 60 * 8;
-  return jwt.sign(user, config.authentication.jwtSecret, {
-    expiresIn: EIGHT_HOURS
-  });
+  return jwt.sign(
+    { username: user.username, password: user.password },
+    config.authentication.jwtSecret,
+    {
+      expiresIn: EIGHT_HOURS
+    }
+  );
 }
 
 module.exports = {

@@ -29,6 +29,7 @@
               class="mx-2"
               :label="answer.answer"
               :disabled="answer.checked"
+              :success="answer.checked"
             ></v-checkbox>
           </div>
           <v-icon
@@ -51,19 +52,33 @@ export default {
   data() {
     return {
       test: null,
+      index: null,
       error: null
     };
   },
   mounted() {
-    const testId = this.$route.params.testId;
-    TestService.testdetail(testId)
+    AuthenticationService.getprog(this.$route.params.testId)
       .then(res => {
-        this.test = res.data;
-        this.$store.dispatch('setTest', res.data);
+        let data = res.data;
+        let correctData = data[data.length - 1];
+        console.log(correctData._id);
+        if ((correctData._id = this.$route.params.testId)) {
+          this.test = correctData;
+          this.$store.dispatch('setTest', this.test);
+        }
       })
       .catch(err => {
         this.error = err;
       });
+
+    // if ((this.noProg = true)) {
+    //   const testId = this.$route.params.testId;
+    //   TestService.testdetail(testId).then(res => {
+    //     console.log(res.data);
+    //     this.test = res.data;
+    //     this.$store.dispatch('setTest', res.data);
+    //   });
+    // }
   },
   computed: {
     ...mapGetters(['getTest'])
@@ -73,7 +88,8 @@ export default {
     sendAnswer(test, question, answer) {
       this.$store.dispatch('setAnswer', {
         questionIndex: question,
-        answerIndex: answer
+        answerIndex: answer,
+        testIndex: this.index
       });
 
       TestService.sendanswer({
@@ -84,21 +100,21 @@ export default {
         .then(res => {
           this.$store.dispatch('setFeedback', {
             feedback: res.data,
-            index: question
+            index: question,
+            testIndex: this.index
           });
 
           this.$store.dispatch('setQuestionAttemps', {
             attemps: this.getTest.questions[question].attemps - 1,
-            index: question
+            index: question,
+            testIndex: this.index
           });
+
+          AuthenticationService.progress(this.getTest);
         })
         .catch(err => {
           console.log(err);
         });
-
-      //TODO: save progress to user
-      // AuthenticationService.progress(this.getTest);
-      // AuthenticationService.prog();
     }
   }
 };

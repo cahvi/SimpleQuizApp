@@ -95,13 +95,36 @@ module.exports = {
       });
   },
   testprogress(req, res) {
-    console.log('hep');
+    const testId = req.params.testId;
+    User.findOne(req.user)
+      .then(user => {
+        if (!user) {
+          res.status(400).send({
+            error: 'User not found'
+          });
+        }
 
-    //TODO: get user test progress
+        let correctTest = user.testprogresses.filter(
+          test => test._id == testId
+        );
+
+        if (correctTest) {
+          res.status(200).send(correctTest);
+        }
+      })
+      .catch(err => {
+        res.status(400).send(err);
+      });
   },
   testprogress_post(req, res) {
-    console.log(req.body);
+    const test = req.body;
+    const user = req.user;
 
-    //TODO: save progress to current user
+    User.findById(user._id)
+      .then(user => {
+        user.testprogresses.push(test);
+        user.save();
+      })
+      .catch(err => console.log(err));
   }
 };

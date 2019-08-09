@@ -10,26 +10,7 @@ export default new Vuex.Store({
     isLoggedIn: false,
 
     //test
-    test: {
-      name: '',
-      password: '',
-      questions: [
-        {
-          question: '',
-          feedback: null,
-          isDone: false,
-          attemps: null,
-          points: null,
-          answers: [
-            {
-              checked: false,
-              correct: null,
-              answer: ''
-            }
-          ]
-        }
-      ]
-    }
+    test: []
   },
   getters: {
     getTest: ({ test }) => test
