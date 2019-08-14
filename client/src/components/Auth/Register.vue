@@ -53,7 +53,8 @@ export default {
       this.error = null;
       AuthenticationService.register({
         username: this.username,
-        password: this.password
+        password: this.password,
+        testprogresses: {}
       })
         .then(() => {
           this.$router.push({ name: 'login' });

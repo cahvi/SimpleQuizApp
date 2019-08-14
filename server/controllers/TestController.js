@@ -91,7 +91,6 @@ module.exports = {
       });
   },
   testprogress(req, res) {
-    const testId = req.params.testId;
     User.findOne(req.user)
       .then(user => {
         if (!user) {
@@ -100,12 +99,11 @@ module.exports = {
           });
         }
 
-        let correctTest = user.testprogresses.filter(
-          test => test._id == testId
-        );
-
+        let correctTest = user.testprogresses[req.params.testId];
         if (correctTest) {
           res.status(200).send(correctTest);
+        } else {
+          res.status(200).send('');
         }
       })
       .catch(err => {
@@ -117,7 +115,8 @@ module.exports = {
     const user = req.user;
     User.findById(user._id)
       .then(user => {
-        user.testprogresses.push(test);
+        user.testprogresses[test._id] = test;
+        user.markModified('testprogresses');
         user.save();
       })
       .catch(err => {

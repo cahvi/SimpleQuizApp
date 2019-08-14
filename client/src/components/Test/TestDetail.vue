@@ -74,18 +74,14 @@ export default {
   mounted() {
     AuthenticationService.getprog(this.$route.params.testId)
       .then(res => {
-        if (!res.data.length) {
+        if (res.data._id == this.$route.params.testId) {
+          this.test = res.data;
+          this.$store.dispatch('setTest', this.test);
+        } else {
           TestService.testdetail(this.$route.params.testId).then(response => {
             this.test = response.data;
             this.$store.dispatch('setTest', response.data);
           });
-        } else {
-          let data = res.data;
-          let correctData = data[data.length - 1];
-          if ((correctData._id = this.$route.params.testId)) {
-            this.test = correctData;
-            this.$store.dispatch('setTest', this.test);
-          }
         }
       })
       .catch(err => {
@@ -136,3 +132,18 @@ export default {
 
 <style>
 </style>
+
+
+        // if (res.data._id == undefined || !res.data.length) {
+        //   TestService.testdetail(this.$route.params.testId).then(response => {
+        //     this.test = response.data;
+        //     this.$store.dispatch('setTest', response.data);
+        //   });
+        // } else {
+        //   let data = res.data;
+        //   if ((data._id = this.$route.params.testId)) {
+        //     this.test = data;
+        //     console.log(this.test);
+        //     this.$store.dispatch('setTest', this.test);
+        //   }
+        // }

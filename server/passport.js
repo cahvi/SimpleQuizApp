@@ -12,15 +12,12 @@ module.exports.jwtLogin = new JwtStrategy(
     secretOrKey: config.authentication.jwtSecret
   },
   function(jwtPayload, done) {
-    console.log('JWT PAYLOAD:', jwtPayload);
-    console.log('tässä id:', jwtPayload._id);
     User.findOne({ _id: jwtPayload._id })
       .exec()
       .then(user => {
         if (!user) {
           return done(new Error(), false);
         }
-        console.log(user);
         return done(null, user);
       })
       .catch(err => {
