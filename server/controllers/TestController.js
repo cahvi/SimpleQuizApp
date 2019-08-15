@@ -59,8 +59,7 @@ module.exports = {
         }
 
         res.status(200).send({
-          message: 'Access granted',
-          test
+          message: 'Access granted'
         });
       })
       .catch(err => {
