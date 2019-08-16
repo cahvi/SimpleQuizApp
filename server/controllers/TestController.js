@@ -35,6 +35,14 @@ module.exports = {
           res.status(403).send('Error.');
         }
 
+        test.questions.map(el => {
+          el.answers.map(x => {
+            if ((x.correct = true)) {
+              x.correct = false;
+            }
+          });
+        });
+
         res.status(200).send(test);
       })
       .catch(err => {

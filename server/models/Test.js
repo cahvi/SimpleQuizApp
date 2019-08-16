@@ -19,6 +19,7 @@ const TestSchema = mongoose.Schema({
       isDone: Boolean,
       attemps: Number,
       points: Number,
+      questionType: String,
       answers: [
         {
           answer: String,

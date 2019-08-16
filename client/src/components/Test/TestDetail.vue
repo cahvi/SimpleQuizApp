@@ -40,15 +40,19 @@
         <v-card-actions>
           <v-layout row wrap>
             <div v-for="(answer, answerIndex) in question.answers" :key="answerIndex">
-              <!-- <v-checkbox
+              <v-checkbox
+                v-if="getTest.questions[questionIndex].questionType == 'multi'"
                 @change="sendAnswer(test._id, questionIndex, answerIndex)"
                 class="mx-2"
-                :color="answer.checked && answer.correct ? 'success' : (answer.checked && !answer.correct ? 'red' : '')"
                 :label="answer.answer"
                 :readonly="answer.checked"
                 v-model="getTest.questions[questionIndex].answers[answerIndex].checked"
-              ></v-checkbox>-->
-              <v-radio-group v-model="getTest.questions[questionIndex].option">
+              ></v-checkbox>
+
+              <v-radio-group
+                v-if="getTest.questions[questionIndex].questionType == 'single'"
+                v-model="getTest.questions[questionIndex].option"
+              >
                 <v-radio
                   @change="sendAnswer(test._id, questionIndex, answerIndex)"
                   class="mx-3"
@@ -92,6 +96,7 @@ export default {
           TestService.testdetail(this.$route.params.testId).then(response => {
             this.test = response.data;
             this.$store.dispatch('setTest', response.data);
+            console.log(this.getTest);
           });
         }
       })
@@ -139,4 +144,4 @@ export default {
 <style scoped>
 </style>
 
-// 
+// :color="answer.checked && answer.correct ? 'success' : (answer.checked && !answer.correct ? 'red' : '')"
