@@ -4,6 +4,7 @@ import Register from './components/Auth/Register';
 import Login from './components/Auth/Login';
 import TestIndex from './components/Test/TestIndex';
 import TestDetail from './components/Test/TestDetail';
+import TestCreate from './components/Test/TestCreate';
 
 Vue.use(Router);
 
@@ -20,6 +21,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/tests/create',
+      name: 'createtest',
+      component: TestCreate
     },
     {
       path: '/tests',

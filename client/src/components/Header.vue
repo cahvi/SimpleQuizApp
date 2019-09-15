@@ -4,6 +4,14 @@
       <router-link tag="span" class="home mx-3" :to="{ name: 'tests' }">
         <v-toolbar-title>Tests</v-toolbar-title>
       </router-link>
+      <router-link
+        tag="span"
+        v-if="user && user.role == 'admin'"
+        class="home mx-3"
+        :to="{ name: 'createtest' }"
+      >
+        <v-toolbar-title>Add test</v-toolbar-title>
+      </router-link>
 
       <v-spacer></v-spacer>
 

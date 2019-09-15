@@ -58,6 +58,7 @@
                   class="mx-3"
                   :label="answer.answer"
                   :value="answer.answer"
+                  :disabled="answer.checked"
                 ></v-radio>
               </v-radio-group>
             </div>

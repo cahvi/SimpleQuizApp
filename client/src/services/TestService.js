@@ -4,6 +4,9 @@ export default {
   testindex() {
     return Api().get('tests');
   },
+  add(cred) {
+    return Api().post('tests', cred);
+  },
   access(info) {
     return Api().post('tests/access', info);
   },

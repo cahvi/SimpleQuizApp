@@ -36,30 +36,30 @@ export default new Vuex.Store({
     setFeedback(state, feedback) {
       state.test.questions[feedback.index].feedback = feedback.feedback;
 
-      feedback.feedback == 'Correct answer!'
+      feedback.feedback == 'Correct answer!' &&
+      state.test.questions[feedback.index].questionType == 'single'
         ? (state.test.questions[feedback.index].isDone = true)
         : '';
     },
     setQuestionAttemps(state, attemp) {
       state.test.questions[attemp.index].attemps = attemp.attemps;
 
-      state.test.questions[attemp.index].attemps == 2 &&
-      state.test.questions[attemp.index].isDone == true
-        ? (state.test.questions[attemp.index].userpoints = 3)
-        : (state.test.questions[attemp.index].userpoints =
-            state.test.questions[attemp.index].userpoints);
-
-      state.test.questions[attemp.index].attemps == 1 &&
-      state.test.questions[attemp.index].isDone == true
-        ? (state.test.questions[attemp.index].userpoints = 2)
-        : (state.test.questions[attemp.index].userpoints =
-            state.test.questions[attemp.index].userpoints);
-
-      state.test.questions[attemp.index].attemps == 0 &&
-      state.test.questions[attemp.index].isDone == true
-        ? (state.test.questions[attemp.index].userpoints = 1)
-        : (state.test.questions[attemp.index].userpoints =
-            state.test.questions[attemp.index].userpoints);
+      //TODO: user points
+      // state.test.questions[attemp.index].attemps == 2 &&
+      // state.test.questions[attemp.index].isDone == true
+      //   ? (state.test.questions[attemp.index].userpoints = 3)
+      //   : (state.test.questions[attemp.index].userpoints =
+      //       state.test.questions[attemp.index].userpoints);
+      // state.test.questions[attemp.index].attemps == 1 &&
+      // state.test.questions[attemp.index].isDone == true
+      //   ? (state.test.questions[attemp.index].userpoints = 2)
+      //   : (state.test.questions[attemp.index].userpoints =
+      //       state.test.questions[attemp.index].userpoints);
+      // state.test.questions[attemp.index].attemps == 0 &&
+      // state.test.questions[attemp.index].isDone == true
+      //   ? (state.test.questions[attemp.index].userpoints = 1)
+      //   : (state.test.questions[attemp.index].userpoints =
+      //       state.test.questions[attemp.index].userpoints);
     }
   },
   actions: {
