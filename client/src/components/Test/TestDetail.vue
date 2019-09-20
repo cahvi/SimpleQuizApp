@@ -13,7 +13,7 @@
         class="grey lighten-4 my-5"
         v-for="(question, questionIndex) in test.questions"
         :key="questionIndex"
-        :disabled="question.isDone || question.attemps == 0"
+        :disabled="question.isDone"
       >
         <v-card-text class="grey--text">{{ question.question }}</v-card-text>
 
@@ -25,11 +25,8 @@
           <p v-else class="grey--text mr-5">{{'/' + getTest.questions[questionIndex].points + 'p'}}</p>
         </v-layout>
         <v-layout align-center justify-end>
-          <p
-            class="grey--text mr-5"
-            v-if="question.attemps >= 0"
-          >Attemps left: {{ getTest.questions[questionIndex].attemps }}</p>
-          <p v-else class="grey--text mr-5">Attemps left: 3</p>
+          <p class="grey--text mr-5">Attemps left: {{ getTest.questions[questionIndex].attemps }}</p>
+          <!-- <p v-else class="grey--text mr-5">Attemps left: 3</p> -->
         </v-layout>
         <!-- <v-layout align-center justify-end>
           <p
@@ -93,11 +90,11 @@ export default {
         if (res.data._id == this.$route.params.testId) {
           this.test = res.data;
           this.$store.dispatch('setTest', this.test);
+          console.log(this.getTest);
         } else {
           TestService.testdetail(this.$route.params.testId).then(response => {
             this.test = response.data;
             this.$store.dispatch('setTest', response.data);
-            console.log(this.getTest);
           });
         }
       })
@@ -128,7 +125,7 @@ export default {
           });
 
           this.$store.dispatch('setQuestionAttemps', {
-            attemps: this.getTest.questions[question].attemps - 1,
+            attemps: this.getTest.questions[question].attemps,
             index: question
           });
 

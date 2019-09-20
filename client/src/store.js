@@ -8,10 +8,69 @@ export default new Vuex.Store({
     user: null,
     isLoggedIn: false,
 
-    test: []
+    test: [],
+    newTest: {
+      name: 'New test',
+      password: null,
+      questions: [
+        {
+          question: 'First question',
+          userpoints: 0,
+          feedback: '',
+          isDone: false,
+          attemps: 3,
+          points: 3,
+          questionType: null,
+          answers: [
+            {
+              answer: 'First answer',
+              checked: false,
+              correct: false
+            },
+            {
+              answer: 'Second answer',
+              checked: false,
+              correct: false
+            },
+            {
+              answer: 'Third answer',
+              checked: false,
+              correct: false
+            }
+          ]
+        },
+        {
+          question: 'Second question',
+          userpoints: 0,
+          feedback: '',
+          isDone: false,
+          attemps: 3,
+          points: 3,
+          questionType: null,
+          answers: [
+            {
+              answer: 'First answer',
+              checked: false,
+              correct: false
+            },
+            {
+              answer: 'Second answer',
+              checked: false,
+              correct: false
+            },
+            {
+              answer: 'Third answer',
+              checked: false,
+              correct: false
+            }
+          ]
+        }
+      ]
+    }
   },
   getters: {
-    getTest: ({ test }) => test
+    getTest: ({ test }) => test,
+    newTest: ({ newTest }) => newTest
   },
   mutations: {
     //User mutations
@@ -28,6 +87,9 @@ export default new Vuex.Store({
     setTest(state, test) {
       state.test = test;
     },
+    setNewTest(state, test) {
+      state.newTest = test;
+    },
     setAnswer(state, answer) {
       state.test.questions[answer.questionIndex].answers[
         answer.answerIndex
@@ -36,30 +98,19 @@ export default new Vuex.Store({
     setFeedback(state, feedback) {
       state.test.questions[feedback.index].feedback = feedback.feedback;
 
-      feedback.feedback == 'Correct answer!' &&
-      state.test.questions[feedback.index].questionType == 'single'
-        ? (state.test.questions[feedback.index].isDone = true)
-        : '';
+      if (
+        feedback.feedback == 'Correct answer!' &&
+        state.test.questions[feedback.index].questionType == 'single'
+      ) {
+        state.test.questions[feedback.index].isDone = true;
+      }
+
+      if ((state.test.questions[feedback.index].attemps = 0)) {
+        state.test.questions[feedback.index].isDone = true;
+      }
     },
     setQuestionAttemps(state, attemp) {
       state.test.questions[attemp.index].attemps = attemp.attemps;
-
-      //TODO: user points
-      // state.test.questions[attemp.index].attemps == 2 &&
-      // state.test.questions[attemp.index].isDone == true
-      //   ? (state.test.questions[attemp.index].userpoints = 3)
-      //   : (state.test.questions[attemp.index].userpoints =
-      //       state.test.questions[attemp.index].userpoints);
-      // state.test.questions[attemp.index].attemps == 1 &&
-      // state.test.questions[attemp.index].isDone == true
-      //   ? (state.test.questions[attemp.index].userpoints = 2)
-      //   : (state.test.questions[attemp.index].userpoints =
-      //       state.test.questions[attemp.index].userpoints);
-      // state.test.questions[attemp.index].attemps == 0 &&
-      // state.test.questions[attemp.index].isDone == true
-      //   ? (state.test.questions[attemp.index].userpoints = 1)
-      //   : (state.test.questions[attemp.index].userpoints =
-      //       state.test.questions[attemp.index].userpoints);
     }
   },
   actions: {
@@ -79,6 +130,9 @@ export default new Vuex.Store({
     //Test actions
     setTest({ commit }, test) {
       commit('setTest', test);
+    },
+    setNewTest({ commit }, test) {
+      commit('setNewTest', test);
     },
     setAnswer({ commit }, answer) {
       commit('setAnswer', answer);
