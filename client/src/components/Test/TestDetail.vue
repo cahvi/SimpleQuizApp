@@ -26,7 +26,6 @@
         </v-layout>
         <v-layout align-center justify-end>
           <p class="grey--text mr-5">Attemps left: {{ getTest.questions[questionIndex].attemps }}</p>
-          <!-- <p v-else class="grey--text mr-5">Attemps left: 3</p> -->
         </v-layout>
         <!-- <v-layout align-center justify-end>
           <p

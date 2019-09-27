@@ -25,7 +25,7 @@
                 :key="questionIndex"
               >
                 <div slot="header">{{item.question}}</div>
-                <v-card class="grey lighten-3 mt-3">
+                <v-card class="grey lighten-4 mt-3">
                   <v-container>
                     <v-layout wrap>
                       <v-flex xs10>
@@ -53,11 +53,10 @@
                         </v-flex>
                         <v-flex xs2>
                           <v-btn
+                            class="mt-5"
                             @click="removeAnswer(questionIndex, answerIndex)"
                             fab
-                            dark
                             small
-                            color="red"
                           >
                             <v-icon>remove</v-icon>
                           </v-btn>
@@ -69,14 +68,13 @@
                         small
                         class="mt-4"
                         @click="addAnswer(questionIndex)"
-                        color="primary"
+                        color="light--grey"
                       >Add Answer</v-btn>
                       <v-btn
                         small
                         class="mt-4 ml-2"
                         @click="removeQuestion(questionIndex)"
-                        color="red"
-                        dark
+                        color="light--grey"
                       >Remove Question</v-btn>
                     </v-layout>
                   </v-container>
@@ -94,7 +92,6 @@
       <v-card-actions>
         <p v-if="error">{{ error }}</p>
         <v-spacer></v-spacer>
-        <v-btn text>Cancel</v-btn>
         <v-btn text @click="addTest">Create</v-btn>
       </v-card-actions>
     </v-card>
@@ -125,8 +122,8 @@ export default {
         userpoints: 0,
         feedback: '',
         isDone: false,
-        attemps: null,
-        points: null,
+        attemps: 3,
+        points: 3,
         questionType: null,
         answers: [
           {
@@ -177,6 +174,39 @@ export default {
       );
       TestService.add(this.test)
         .then(() => {
+          this.$store.commit('setNewTest', {
+            name: 'New test',
+            password: null,
+            maxpoints: null,
+            questions: [
+              {
+                question: 'First question',
+                userpoints: 0,
+                feedback: '',
+                isDone: false,
+                attemps: 3,
+                points: 3,
+                questionType: null,
+                answers: [
+                  {
+                    answer: 'First answer',
+                    checked: false,
+                    correct: false
+                  },
+                  {
+                    answer: 'Second answer',
+                    checked: false,
+                    correct: false
+                  },
+                  {
+                    answer: 'Third answer',
+                    checked: false,
+                    correct: false
+                  }
+                ]
+              }
+            ]
+          });
           this.$router.push({ name: 'tests' });
         })
         .catch(err => {

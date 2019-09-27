@@ -39,32 +39,6 @@ export default new Vuex.Store({
               correct: false
             }
           ]
-        },
-        {
-          question: 'Second question',
-          userpoints: 0,
-          feedback: '',
-          isDone: false,
-          attemps: 3,
-          points: 3,
-          questionType: null,
-          answers: [
-            {
-              answer: 'First answer',
-              checked: false,
-              correct: false
-            },
-            {
-              answer: 'Second answer',
-              checked: false,
-              correct: false
-            },
-            {
-              answer: 'Third answer',
-              checked: false,
-              correct: false
-            }
-          ]
         }
       ]
     }
