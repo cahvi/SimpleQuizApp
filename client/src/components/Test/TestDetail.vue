@@ -90,7 +90,6 @@ export default {
         if (res.data._id == this.$route.params.testId) {
           this.test = res.data;
           this.$store.dispatch('setTest', this.test);
-          console.log(this.getTest);
         } else {
           TestService.testdetail(this.$route.params.testId).then(response => {
             this.test = response.data;
@@ -112,20 +111,18 @@ export default {
         questionIndex: question,
         answerIndex: answer
       });
-
       TestService.sendanswer({
         test,
         question,
         answer
       })
         .then(res => {
-          this.$store.dispatch('setFeedback', {
-            feedback: res.data,
+          this.$store.dispatch('setQuestionAttemps', {
+            attemps: this.getTest.questions[question].attemps - 1,
             index: question
           });
-
-          this.$store.dispatch('setQuestionAttemps', {
-            attemps: this.getTest.questions[question].attemps,
+          this.$store.dispatch('setFeedback', {
+            feedback: res.data,
             index: question
           });
 

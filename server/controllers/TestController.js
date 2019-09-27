@@ -17,10 +17,6 @@ module.exports = {
       if (user.role !== 'admin') {
         res.status(401).send('You do not have access');
       } else {
-        test.questions.map(el => {
-          console.log(el);
-        });
-
         test
           .save()
           .then(test => {

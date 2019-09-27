@@ -12,6 +12,7 @@ export default new Vuex.Store({
     newTest: {
       name: 'New test',
       password: null,
+      maxpoints: null,
       questions: [
         {
           question: 'First question',
@@ -95,22 +96,23 @@ export default new Vuex.Store({
         answer.answerIndex
       ].checked = true;
     },
+    setQuestionAttemps(state, attemp) {
+      state.test.questions[attemp.index].attemps = attemp.attemps;
+    },
     setFeedback(state, feedback) {
       state.test.questions[feedback.index].feedback = feedback.feedback;
-
       if (
         feedback.feedback == 'Correct answer!' &&
         state.test.questions[feedback.index].questionType == 'single'
       ) {
         state.test.questions[feedback.index].isDone = true;
       }
-
-      if ((state.test.questions[feedback.index].attemps = 0)) {
+      if (
+        state.test.questions[feedback.index].attemps == 0 &&
+        state.test.questions[feedback.index].questionType == 'multi'
+      ) {
         state.test.questions[feedback.index].isDone = true;
       }
-    },
-    setQuestionAttemps(state, attemp) {
-      state.test.questions[attemp.index].attemps = attemp.attemps;
     }
   },
   actions: {
@@ -137,11 +139,11 @@ export default new Vuex.Store({
     setAnswer({ commit }, answer) {
       commit('setAnswer', answer);
     },
-    setFeedback({ commit }, feedback) {
-      commit('setFeedback', feedback);
-    },
     setQuestionAttemps({ commit }, attemp) {
       commit('setQuestionAttemps', attemp);
+    },
+    setFeedback({ commit }, feedback) {
+      commit('setFeedback', feedback);
     }
   }
 });

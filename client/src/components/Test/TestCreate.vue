@@ -171,6 +171,10 @@ export default {
       }
     },
     addTest() {
+      this.test.maxpoints = this.test.questions.reduce(
+        (a, b) => a + b.points,
+        0
+      );
       TestService.add(this.test)
         .then(() => {
           this.$router.push({ name: 'tests' });
