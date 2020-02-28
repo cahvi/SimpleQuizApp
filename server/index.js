@@ -16,10 +16,9 @@ mongoose.set('useCreateIndex', true);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
 db.once('open', () => {
-  console.log('connected to mongodb');
+	console.log('connected to mongodb');
 });
 
-//require('./passport');
 require('./routes')(app);
 
 const port = config.port;
