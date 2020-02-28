@@ -1,1 +1,1 @@
-# tenttiapp
+# Simple quiz app
